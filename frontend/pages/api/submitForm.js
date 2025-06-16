@@ -13,49 +13,47 @@ export default async function handler(req, res) {
 
   console.log("Received Data:", req.body); // Debugging log
 
-  // Check if any field is missing
-  if (!floorType || !size || !name || !email || !phone || !zipCode || !currentFloor) {
+  // Validar solo los campos requeridos (email es opcional)
+  if (!floorType || !size || !name || !phone || !zipCode || !currentFloor) {
     console.error("Missing required fields:", req.body);
-    return res.status(400).json({ message: "All fields are required" });
+    return res.status(400).json({ message: "Required fields are missing" });
   }
 
   try {
-    // 📌 1️⃣ Send WhatsApp Message (Twilio)
-    if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
-      throw new Error("Twilio credentials missing.");
-    }
-    if (!process.env.TWILIO_WHATSAPP_NUMBER || !process.env.ADMIN_WHATSAPP_NUMBER) {
-      throw new Error("Twilio phone numbers missing.");
+    // 1️⃣ Enviar WhatsApp (Twilio)
+    const { 
+      TWILIO_ACCOUNT_SID, 
+      TWILIO_AUTH_TOKEN, 
+      TWILIO_WHATSAPP_NUMBER, 
+      ADMIN_WHATSAPP_NUMBER 
+    } = process.env;
+
+    if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_WHATSAPP_NUMBER || !ADMIN_WHATSAPP_NUMBER) {
+      throw new Error("Twilio configuration is incomplete.");
     }
 
-    const twilioClient = twilio(
-      process.env.TWILIO_ACCOUNT_SID,
-      process.env.TWILIO_AUTH_TOKEN
-    );
+    const twilioClient = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
     const message = await twilioClient.messages.create({
-    from: process.env.TWILIO_WHATSAPP_NUMBER,
-    to: process.env.ADMIN_WHATSAPP_NUMBER,
-    body: `New Quote Request:
-    Name: ${name}
-    Phone: ${phone}
-    Email: ${email}
-    Floor Type: ${floorType}
-    Size: ${size}
-    Current Floor: ${currentFloor}
-    ZIP Code: ${zipCode}`,
-});
+      from: TWILIO_WHATSAPP_NUMBER,
+      to: ADMIN_WHATSAPP_NUMBER,
+      body: `📩 New Quote Request:
+Name: ${name}
+Phone: ${phone}
+Email: ${email || "Not provided"}
+Floor Type: ${floorType}
+Size: ${size}
+Current Floor: ${currentFloor}
+ZIP Code: ${zipCode}`,
+    });
 
-console.log("✅ Twilio WhatsApp message SID:", message.sid);
-console.log("📤 Message status:", message.status);
-console.log("🧾 Full message object:", message);
+    console.log("✅ Twilio WhatsApp message SID:", message.sid);
 
-
-    // 📌 2️⃣ Send Email to Admin
+    // 2️⃣ Enviar correo al admin
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
-      secure: false, // Set to true if using port 465
+      secure: false,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -66,25 +64,26 @@ console.log("🧾 Full message object:", message);
       from: `"Quote Request" <${process.env.SMTP_USER}>`,
       to: process.env.ADMIN_EMAIL,
       subject: "New Flooring Quote Request",
-      text: `You have received a new quote request.
+      text: `🧾 New Quote Details:
 
-      Name: ${name}
-      Phone: ${phone}
-      Email: ${email}
-      Floor Type: ${floorType}
-      Size: ${size}
-      Current Floor: ${currentFloor}
-      ZIP Code: ${zipCode}`,
+Name: ${name}
+Phone: ${phone}
+Email: ${email || "Not provided"}
+Floor Type: ${floorType}
+Size: ${size}
+Current Floor: ${currentFloor}
+ZIP Code: ${zipCode}`,
     });
 
-    // 📌 3️⃣ Send Confirmation Email to Client
-    await transporter.sendMail({
-      from: `"A's Flooring" <${process.env.SMTP_USER}>`,
-      to: email,
-      subject: "Your Quote Request Confirmation",
-      text: `Hello ${name}, 
+    // 3️⃣ (Opcional) Enviar correo de confirmación al cliente si dio email
+    if (email) {
+      await transporter.sendMail({
+        from: `"A's Flooring" <${process.env.SMTP_USER}>`,
+        to: email,
+        subject: "Your Quote Request Confirmation",
+        text: `Hello ${name}, 
 
-Thank you for requesting a flooring quote with A's Flooring! 
+Thank you for requesting a flooring quote with A's Flooring!
 
 We have received your request for:
 - Floor Type: ${floorType}
@@ -94,9 +93,10 @@ We have received your request for:
 
 Our team will contact you shortly.
 
-Best Regards, 
+Best regards,  
 A's Flooring Team`,
-    });
+      });
+    }
 
     return res.status(200).json({ message: "Quote submitted successfully!" });
   } catch (error) {
