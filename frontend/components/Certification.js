@@ -19,19 +19,19 @@ export default function Certification() {
   }, []);
 
   return (
-    <section id="certification" className="py-24 bg-white">
-      <div className="container mx-auto px-6">
+    <section id="certification" className="py-16 lg:py-20 bg-white">
+      <div className="max-w-6xl lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className={`max-w-6xl mx-auto p-10 bg-white rounded-2xl shadow-2xl border border-gray-200 transition-all duration-1000 ${
+          className={`mx-auto p-8 lg:p-10 bg-white rounded-2xl shadow-2xl border border-gray-200 transition-all duration-1000 ${
             show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
           <div className="flex flex-col md:flex-row items-start gap-8">
             {/* Icon */}
-            <div className="text-yellow-500">
+            <div className="text-yellow-500 flex-shrink-0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-16 w-16"
+                className="h-14 w-14 md:h-16 md:w-16"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -53,18 +53,28 @@ export default function Certification() {
 
             {/* Text Content */}
             <div>
-              <h2 className="text-4xl font-bold text-gray-800 mb-6">
+              <span className="inline-block text-xs font-semibold uppercase tracking-[0.18em] text-yellow-600 mb-2">
+                Certification
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
                 Certified and Quality Guaranteed
               </h2>
-              <p className="text-xl text-gray-700 leading-relaxed mb-6">
-                A's Flooring is a fully licensed and certified contractor specializing in Flooring and Floor Covering (C15). Our License Number{" "}
-                <span className="font-semibold">1130297</span>, issued by the{" "}
-                <span className="font-semibold">Contractors State License Board (CSLB)</span>,
-                reflects our commitment to the highest standards of craftsmanship and professionalism.
+              <p className="text-lg md:text-xl text-gray-700 leading-relaxed mb-4">
+                A&apos;s Flooring Inc. is a fully licensed and certified contractor
+                specializing in Flooring and Floor Covering (C15). Our License
+                Number <span className="font-semibold">1151690</span>, issued
+                by the{" "}
+                <span className="font-semibold">
+                  Contractors State License Board (CSLB)
+                </span>
+                , reflects our commitment to the highest standards of
+                craftsmanship and professionalism.
               </p>
-              <p className="text-xl text-gray-600 leading-relaxed">
-                Choosing a licensed contractor means peace of mind. Your project will be handled with full accountability, legal compliance, and expert-level care.
-                We take pride in delivering both stunning results and the long-term protection your home deserves.
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+                Choosing a licensed contractor means peace of mind. Your project
+                will be handled with full accountability, legal compliance, and
+                expert-level care. We take pride in delivering both stunning
+                results and the long-term protection your home deserves.
               </p>
             </div>
           </div>

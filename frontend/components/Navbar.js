@@ -1,93 +1,133 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Function for smooth scrolling to any section
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const scrollToSection = (event, sectionId) => {
     event.preventDefault();
     const section = document.querySelector(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
-      setIsOpen(false); // Close mobile menu after clicking
+      setIsOpen(false);
     }
   };
 
   return (
-    <nav className="bg-[#D6B88C] text-white fixed top-0 w-full z-50 shadow-lg">
-      <div className="container mx-auto flex justify-between items-center py-6 px-6">
-        {/* Logo */}
-        <div className="flex items-center space-x-3">
-          <Image src="/logo.jpg" alt="Company Logo" width={70} height={70} className="h-14 w-auto" />
-          <h1 className="text-3xl font-bold tracking-wide text-[#ECF0F1]">A's Flooring</h1>
+    <nav
+      className={[
+        "fixed top-0 w-full z-50",
+        "transition-all duration-200",
+        scrolled
+          ? "bg-white/85 backdrop-blur border-b border-black/5 shadow-sm"
+          : "bg-white/60 backdrop-blur border-b border-black/0",
+      ].join(" ")}
+    >
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+        {/* Brand */}
+        <a
+          href="#"
+          onClick={(e) => scrollToSection(e, "body")}
+          className="flex items-center gap-3"
+        >
+          <Image
+            src="/logo.jpg"
+            alt="A's Flooring"
+            width={44}
+            height={44}
+            className="h-11 w-11 rounded-xl object-cover border border-black/5"
+            priority
+          />
+          <span className="text-base sm:text-lg font-semibold tracking-tight text-neutral-900">
+            A&apos;s Flooring
+          </span>
+        </a>
+
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-1">
+          {[
+            { label: "About", id: "#about" },
+            { label: "Portfolio", id: "#portfolio" },
+            { label: "Testimonials", id: "#testimonials" },
+            { label: "Contact", id: "#contact" },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={(e) => scrollToSection(e, item.id)}
+              className="px-4 py-2 text-sm font-medium text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-full transition"
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
 
-        {/* Menu Links (Desktop) */}
-        <div className="hidden md:flex space-x-8">
-        <button
-          onClick={(e) => scrollToSection(e, "#about")}
-          className="text-lg px-3 py-2 hover:text-[#F1C40F] transition font-medium"
-        >
-          About Us
-        </button>
-        <button
-          onClick={(e) => scrollToSection(e, "#portfolio")}
-          className="text-lg px-3 py-2 hover:text-[#F1C40F] transition font-medium"
-        >
-          Portfolio
-        </button>
-        <button
-          onClick={(e) => scrollToSection(e, "#testimonials")}
-          className="text-lg px-3 py-2 hover:text-[#F1C40F] transition font-medium"
-        >
-          Testimonials
-        </button>
-        <button
-          onClick={(e) => scrollToSection(e, "#contact")}
-          className="text-lg px-3 py-2 hover:text-[#F1C40F] transition font-medium"
-        >
-          Contact
-        </button>
-      </div>
-
-        {/* Mobile Menu Button */}
-        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden focus:outline-none">
-          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-          </svg>
-        </button>
-
-        {/* Button Get a Quote */}
-        <button
-          onClick={(e) => scrollToSection(e, "#questionnaire")}
-          className="hidden md:block bg-[#F1C40F] px-6 py-2 rounded-lg font-semibold hover:scale-105 active:scale-95 transition-transform shadow-md text-white"
-        >
-          Get a Quote
-        </button>
-      </div>
-
-      {/* Mobile Menu Dropdown */}
-      {isOpen && (
-        <div className="md:hidden bg-[#34495E] text-white py-4 space-y-4 text-center">
-          <button onClick={(e) => scrollToSection(e, "#about")} className="block hover:text-[#F1C40F] transition">
-            About Us
-          </button>
-          <button onClick={(e) => scrollToSection(e, "#portfolio")} className="block hover:text-[#F1C40F] transition">
-            Portfolio
-          </button>
-          <button onClick={(e) => scrollToSection(e, "#testimonials")} className="block hover:text-[#F1C40F] transition">
-            Testimonials
-          </button>
-          <button onClick={(e) => scrollToSection(e, "#contact")} className="block hover:text-[#F1C40F] transition">
-            Contact
-          </button>
+        {/* Right actions */}
+        <div className="flex items-center gap-2">
+          {/* Desktop CTA */}
           <button
             onClick={(e) => scrollToSection(e, "#questionnaire")}
-            className="mt-2 bg-[#F1C40F] px-6 py-2 rounded-lg font-semibold hover:scale-105 transition-transform text-gray-900"
+            className="hidden md:inline-flex items-center justify-center rounded-full bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-600 transition active:scale-[0.99]"
           >
-            Get a Quote
+            Get a Free Quote
           </button>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsOpen((v) => !v)}
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-neutral-100 transition"
+            aria-label="Open menu"
+          >
+            <svg
+              className="w-6 h-6 text-neutral-900"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile dropdown */}
+      {isOpen && (
+        <div className="md:hidden bg-white border-t border-black/5">
+          <div className="max-w-7xl mx-auto px-4 py-4 space-y-2">
+            {[
+              { label: "About", id: "#about" },
+              { label: "Portfolio", id: "#portfolio" },
+              { label: "Testimonials", id: "#testimonials" },
+              { label: "Contact", id: "#contact" },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={(e) => scrollToSection(e, item.id)}
+                className="w-full text-left px-4 py-3 rounded-2xl text-sm font-medium text-neutral-800 hover:bg-neutral-100 transition"
+              >
+                {item.label}
+              </button>
+            ))}
+
+            <button
+              onClick={(e) => scrollToSection(e, "#questionnaire")}
+              className="w-full mt-2 inline-flex items-center justify-center rounded-2xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-amber-600 transition"
+            >
+              Get a Free Quote
+            </button>
+          </div>
         </div>
       )}
     </nav>

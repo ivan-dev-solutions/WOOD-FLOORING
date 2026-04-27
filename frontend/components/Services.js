@@ -1,141 +1,225 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const services = [
   {
     title: "Glued Down",
-    description: "Durable flooring installation using adhesive. Great for concrete slabs and high-traffic spaces.",
-    icon: (
-      <svg className="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <rect x="3" y="3" width="7" height="7" strokeWidth="2" />
-        <rect x="14" y="3" width="7" height="7" strokeWidth="2" />
-        <rect x="3" y="14" width="7" height="7" strokeWidth="2" />
-        <rect x="14" y="14" width="7" height="7" strokeWidth="2" />
-      </svg>
-    ),
+    description: "Adhesive install—ideal for concrete slabs and high-traffic areas.",
+    image: "/project27.jpeg",
+    highlights: ["Great for concrete", "High-traffic ready", "Stable finish"],
   },
   {
     title: "Nailed Down",
-    description: "Classic wood installation method using nails for a solid and lasting finish.",
-    icon: (
-      <svg className="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path d="M6 2l1 1v6l-1 1H5l-1-1V3l1-1h1zM13 2l1 1v6l-1 1h-1l-1-1V3l1-1h1zM20 2l1 1v6l-1 1h-1l-1-1V3l1-1h1z" strokeWidth="2" />
-        <path d="M5 10v10M12 10v10M19 10v10" strokeWidth="2" />
-      </svg>
-    ),
+    description: "Classic wood installation for a solid, long-lasting feel.",
+    image: "/project26.jpeg",
+    highlights: ["Traditional method", "Strong hold", "Premium feel"],
   },
   {
     title: "LVP (Luxury Vinyl Plank)",
-    description: "Stylish, water-resistant vinyl flooring that mimics natural wood.",
-    icon: (
-      <svg className="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <rect x="3" y="3" width="18" height="6" rx="1" strokeWidth="2" />
-        <rect x="3" y="10" width="18" height="6" rx="1" strokeWidth="2" />
-        <rect x="3" y="17" width="18" height="4" rx="1" strokeWidth="2" />
-      </svg>
-    ),
+    description: "Water-resistant, stylish, and durable—wood look with easy care.",
+    image: "/project24.jpeg",
+    highlights: ["Water-resistant", "Easy maintenance", "Modern look"],
   },
   {
     title: "Floating",
-    description: "Quick-install system where planks float above the subfloor without glue or nails.",
-    icon: (
-      <svg className="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path d="M4 6h16M4 12h16M4 18h16" strokeWidth="2" />
-        <path d="M4 6l4 4 4-4" strokeWidth="2" />
-        <path d="M4 12l4 4 4-4" strokeWidth="2" />
-      </svg>
-    ),
+    description: "Fast install system—planks lock together without glue or nails.",
+    image: "/project23.jpeg",
+    highlights: ["Quick install", "Clean process", "Great value"],
   },
   {
     title: "Vinyl Glued Down",
-    description: "Affordable and durable vinyl flooring glued directly to the subfloor.",
-    icon: (
-      <svg className="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <circle cx="12" cy="12" r="10" strokeWidth="2" />
-        <path d="M12 6v6l4 2" strokeWidth="2" />
-      </svg>
-    ),
+    description: "Affordable, durable vinyl installed directly to the subfloor.",
+    image: "/project22.jpeg",
+    highlights: ["Budget-friendly", "Durable surface", "Smooth finish"],
   },
   {
     title: "Carpet",
-    description: "Warm and soft surface ideal for comfort and insulation in bedrooms and living areas.",
-    icon: (
-      <svg className="w-6 h-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <rect x="4" y="4" width="16" height="16" rx="2" strokeWidth="2" />
-        <path d="M4 9h16M4 15h16" strokeWidth="2" />
-      </svg>
-    ),
+    description: "Soft, warm comfort—ideal for bedrooms and living spaces.",
+    image: "/project25.jpeg",
+    highlights: ["Comfort", "Insulation", "Quiet feel"],
   },
 ];
 
-export default function Services() {
-  const [activeIndex, setActiveIndex] = useState(null);
+function ChevronDown({ isOpen }) {
+  return (
+    <svg
+      className={[
+        "h-5 w-5 text-stone-500 transition-transform duration-200",
+        isOpen ? "rotate-180" : "rotate-0",
+      ].join(" ")}
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M5 7.5L10 12.5L15 7.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
-  const toggle = (index) => {
-    setActiveIndex(index === activeIndex ? null : index);
-  };
+export default function Services() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeService = services[activeIndex];
 
   return (
-    <section className="py-20 px-6 bg-white">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[minmax(400px,_1fr)_1fr] gap-32">
-        
-        {/* Left column */}
-        <div>
-          <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-yellow-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <rect x="3" y="3" width="7" height="7" strokeWidth="2" />
-              <rect x="14" y="3" width="7" height="7" strokeWidth="2" />
-              <rect x="3" y="14" width="7" height="7" strokeWidth="2" />
-              <rect x="14" y="14" width="7" height="7" strokeWidth="2" />
-            </svg>
-            <h2 className="text-3xl font-semibold text-neutral-800">Our Flooring Services</h2>
-          </div>
-          <div className="w-12 h-1 bg-yellow-500 rounded mt-4 mb-6"></div>
-          <p className="text-gray-600 text-base leading-relaxed text-justify">
-            We offer a wide range of flooring installation methods tailored to your space, style, and budget. Click on any service to learn more about how we can bring comfort, durability, and design to your home or business.
-          </p>
-        </div>
+    <section className="relative py-16 lg:py-24 px-4 bg-warm-white overflow-hidden">
+      {/* Subtle warm radial accent */}
+      <div className="absolute inset-0 warm-glow-br pointer-events-none" />
 
-        {/* Right column: Services */}
-        <div className="space-y-8">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              className="cursor-pointer group"
-              onClick={() => toggle(index)}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex gap-6 items-start">
-                <span className="text-yellow-500 font-bold text-lg min-w-[30px]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <p className="text-lg font-semibold text-gray-800 group-hover:text-yellow-600 transition">
-                      {service.title}
-                    </p>
-                    <div className="ml-4">{service.icon}</div>
-                  </div>
-                  {activeIndex === index && (
-                    <div className="mt-4 flex gap-4 items-start text-gray-600 text-base leading-relaxed">
-                      <span className="hidden md:block">{service.icon}</span>
-                      <p>{service.description}</p>
-                    </div>
-                  )}
+      <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(520px,1.1fr)_minmax(0,1fr)] gap-12 lg:gap-16 items-start">
+        {/* Left: Title + Image proof */}
+        <div className="flex flex-col gap-6">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">
+              Services
+            </p>
+            <h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-stone-900">
+              Our Flooring Services
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-stone-700 leading-relaxed max-w-xl">
+              Choose a service to see an example project and the best fit for your space.
+            </p>
+          </div>
+
+          {/* Active proof card */}
+          <motion.div
+            key={activeService.title}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            className="relative overflow-hidden rounded-3xl border border-amber-100 bg-cream-100 shadow-warm-xl aspect-[16/10]"
+          >
+            <img
+              src={activeService.image}
+              alt={activeService.title}
+              className="w-full h-full object-cover"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-stone-900/75 via-stone-900/15 to-transparent" />
+
+            <div className="absolute left-5 right-5 bottom-5">
+              <div className="flex flex-col gap-3">
+                <div className="inline-flex w-fit items-center rounded-full bg-white/15 backdrop-blur px-4 py-2 text-white text-sm font-semibold">
+                  {activeService.title}
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {activeService.highlights.map((h) => (
+                    <span
+                      key={h}
+                      className="rounded-full bg-white/10 backdrop-blur px-3 py-1 text-xs text-white/90 border border-white/10"
+                    >
+                      {h}
+                    </span>
+                  ))}
                 </div>
               </div>
-              <hr className="mt-6 border-gray-200" />
-            </motion.div>
-          ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Right: Accordion list */}
+        <div className="space-y-3">
+          {services.map((service, index) => {
+            const isActive = index === activeIndex;
+
+            return (
+              <div
+                key={service.title}
+                className={[
+                  "rounded-2xl border transition cursor-pointer",
+                  isActive
+                    ? "border-amber-300 bg-cream-100 shadow-warm-lg"
+                    : "border-amber-100/70 bg-white hover:bg-cream-50 shadow-warm",
+                ].join(" ")}
+                onClick={() => setActiveIndex(index)}
+              >
+                <div className="flex items-center justify-between px-5 py-4">
+                  <div className="flex items-center gap-4">
+                    <span
+                      className={[
+                        "text-sm font-semibold w-10 h-10 rounded-full flex items-center justify-center transition",
+                        isActive
+                          ? "bg-amber-500 text-white shadow-warm"
+                          : "bg-cream-200 text-amber-800",
+                      ].join(" ")}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <div>
+                      <p className="text-base sm:text-lg font-semibold text-stone-900">
+                        {service.title}
+                      </p>
+                      <p className="text-sm text-stone-600">
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <ChevronDown isOpen={isActive} />
+                </div>
+
+                <AnimatePresence initial={false}>
+                  {isActive && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 pb-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-4 items-center rounded-2xl bg-white border border-amber-100 p-4 shadow-warm">
+                          <div className="overflow-hidden rounded-xl border border-amber-100/70 bg-cream-100 aspect-[4/3]">
+                            <img
+                              src={service.image}
+                              alt={`${service.title} example`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+
+                          <div>
+                            <p className="text-sm font-semibold text-stone-900">
+                              Example project
+                            </p>
+                            <p className="mt-1 text-sm text-stone-600 leading-relaxed">
+                              {service.description}
+                            </p>
+
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              {service.highlights.map((h) => (
+                                <span
+                                  key={h}
+                                  className="rounded-full bg-cream-100 px-3 py-1 text-xs text-amber-900 border border-amber-200/60"
+                                >
+                                  {h}
+                                </span>
+                              ))}
+                            </div>
+
+                            <div className="mt-4">
+                              <a
+                                href="#questionnaire"
+                                className="inline-flex items-center justify-center rounded-full bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white shadow-warm hover:bg-amber-600 hover:shadow-warm-lg transition active:scale-[0.99]"
+                              >
+                                Get a Free Quote
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
