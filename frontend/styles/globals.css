@@ -10,7 +10,7 @@
 html, body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-feature-settings: 'cv11', 'ss01';
-  background-color: #fbf7f1; /* fallback warm cream */
+  background-color: #fbf7f1;
 }
 
 h1, h2 {
@@ -18,29 +18,40 @@ h1, h2 {
   letter-spacing: -0.02em;
 }
 
-/* ---- Warm cream backgrounds ----
-   Use these as utility classes to break the white monotony
-   between sections. They go from light → warmer → darker. */
+/* ---- Mobile: prevent sticky CTA from covering content ---- */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 80px;
+  }
+}
 
+/* ---- Hide scrollbar for horizontal carousels ---- */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ---- Warm cream backgrounds ---- */
 .bg-cream-50 {
-  background-color: #fdfbf7;  /* casi blanco, pero cálido */
+  background-color: #fdfbf7;
 }
 
 .bg-cream-100 {
-  background-color: #faf5ec;  /* crema suave (warm) */
+  background-color: #faf5ec;
 }
 
 .bg-cream-200 {
-  background-color: #f5ecdc;  /* crema mas saturado */
+  background-color: #f5ecdc;
 }
 
 .bg-warm-white {
-  background-color: #fcfaf6;  /* white con tinte crema */
+  background-color: #fcfaf6;
 }
 
-/* ---- Subtle paper / grain texture ----
-   Adds a barely-visible noise texture. Keeps the section from looking flat. */
-
+/* ---- Subtle paper / grain texture ---- */
 .texture-grain {
   position: relative;
 }
@@ -55,9 +66,7 @@ h1, h2 {
   background-size: 200px 200px;
 }
 
-/* ---- Soft warm radial accents ----
-   For more elegant section headers. Add as a child div. */
-
+/* ---- Soft warm radial accents ---- */
 .warm-glow-tl {
   background-image: radial-gradient(
     ellipse at top left,
@@ -74,10 +83,7 @@ h1, h2 {
   );
 }
 
-/* ---- Decorative section divider ----
-   Wood-grain inspired horizontal line between sections.
-   Use: <div className="section-divider" /> */
-
+/* ---- Decorative section divider ---- */
 .section-divider {
   height: 1px;
   background: linear-gradient(
@@ -92,9 +98,7 @@ h1, h2 {
   max-width: 80%;
 }
 
-/* ---- Warm shadow utility ----
-   Replaces flat gray shadows with a slightly warm-tinted version. */
-
+/* ---- Warm shadow utility ---- */
 .shadow-warm {
   box-shadow:
     0 4px 6px -1px rgba(120, 53, 15, 0.08),

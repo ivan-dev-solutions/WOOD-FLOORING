@@ -1,14 +1,14 @@
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
-  // JSON-LD Schema.org para Google Local Pack — clave para SEO local
+  // JSON-LD Schema.org for Google Local Pack
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": "https://asflooringinc.com/#business",
+    "@id": "https://as-flooring.com/#business",
     name: "A's Flooring Inc.",
-    image: "https://asflooringinc.com/logo.jpg",
-    url: "https://asflooringinc.com",
+    image: "https://as-flooring.com/logo.jpg",
+    url: "https://as-flooring.com",
     telephone: "+1-619-207-6864",
     email: "a.flooringg@gmail.com",
     priceRange: "$$",
@@ -75,12 +75,15 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Favicon */}
-        <link rel="icon" href="/logo.ico" />
-        <link rel="apple-touch-icon" href="/logo.jpg" />
+        {/* Favicons - multi-size for best display across platforms */}
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
 
-        {/* Charset & viewport already handled by Next, but explicit theme-color helps mobile */}
-        <meta name="theme-color" content="#0a0a0a" />
+        <meta name="theme-color" content="#f59e0b" />
 
         {/* Primary SEO meta tags */}
         <meta
@@ -96,7 +99,7 @@ export default function Document() {
         <meta name="geo.region" content="US-CA" />
         <meta name="geo.placename" content="San Diego" />
 
-        {/* Open Graph (Facebook / WhatsApp / LinkedIn previews) */}
+        {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="A's Flooring Inc." />
@@ -108,12 +111,12 @@ export default function Document() {
           property="og:description"
           content="Licensed C-15 flooring contractor serving San Diego. Hardwood, vinyl, laminate. Free estimates. CSLB #1151690."
         />
-        <meta property="og:url" content="https://asflooringinc.com" />
-        <meta property="og:image" content="https://asflooringinc.com/project27.jpeg" />
+        <meta property="og:url" content="https://as-flooring.com" />
+        <meta property="og:image" content="https://as-flooring.com/project27.jpeg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
 
-        {/* Twitter / X cards */}
+        {/* Twitter cards */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
@@ -123,9 +126,9 @@ export default function Document() {
           name="twitter:description"
           content="Licensed flooring installation in San Diego. Free estimates. CSLB #1151690."
         />
-        <meta name="twitter:image" content="https://asflooringinc.com/project27.jpeg" />
+        <meta name="twitter:image" content="https://as-flooring.com/project27.jpeg" />
 
-        {/* Google Fonts: Inter (body) + Fraunces (display headings) */}
+        {/* Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -133,7 +136,7 @@ export default function Document() {
           rel="stylesheet"
         />
 
-        {/* Schema.org structured data — boosts Google Local Pack ranking */}
+        {/* Schema.org structured data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

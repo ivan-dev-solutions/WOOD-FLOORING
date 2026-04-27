@@ -5,7 +5,7 @@ export default function FloatingSocialMenu() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+    <div className="hidden md:flex fixed bottom-6 right-6 z-50 flex-col items-end gap-2">
       {open && (
         <div className="flex flex-col items-end gap-3 mb-2 transition-all duration-300">
           <a
@@ -40,7 +40,7 @@ export default function FloatingSocialMenu() {
 
       <button
         onClick={() => setOpen(!open)}
-        className="bg-yellow-500 text-white p-4 rounded-full shadow-lg hover:bg-yellow-600 transition"
+        className="bg-amber-500 text-white p-4 rounded-full shadow-lg hover:bg-amber-600 transition"
         aria-label="Toggle social menu"
       >
         {open ? <FaTimes /> : <FaPlus />}

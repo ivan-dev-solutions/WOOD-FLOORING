@@ -44,7 +44,7 @@ function ChevronDown({ isOpen }) {
   return (
     <svg
       className={[
-        "h-5 w-5 text-stone-500 transition-transform duration-200",
+        "h-5 w-5 text-stone-500 transition-transform duration-200 flex-shrink-0",
         isOpen ? "rotate-180" : "rotate-0",
       ].join(" ")}
       viewBox="0 0 20 20"
@@ -67,12 +67,11 @@ export default function Services() {
   const activeService = services[activeIndex];
 
   return (
-    <section className="relative py-16 lg:py-24 px-4 bg-warm-white overflow-hidden">
-      {/* Subtle warm radial accent */}
+    <section className="relative py-12 sm:py-16 lg:py-24 px-4 bg-warm-white overflow-hidden">
       <div className="absolute inset-0 warm-glow-br pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(520px,1.1fr)_minmax(0,1fr)] gap-12 lg:gap-16 items-start">
-        {/* Left: Title + Image proof */}
+      <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(520px,1.1fr)_minmax(0,1fr)] gap-8 sm:gap-12 lg:gap-16 items-start">
+        {/* Header + active proof — desktop sees image, mobile only sees title */}
         <div className="flex flex-col gap-6">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">
@@ -81,18 +80,18 @@ export default function Services() {
             <h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-stone-900">
               Our Flooring Services
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-stone-700 leading-relaxed max-w-xl">
-              Choose a service to see an example project and the best fit for your space.
+            <p className="mt-3 sm:mt-4 text-sm sm:text-lg text-stone-700 leading-relaxed max-w-xl">
+              Tap a service below to see an example project and the best fit for your space.
             </p>
           </div>
 
-          {/* Active proof card */}
+          {/* Active proof card — solo desktop */}
           <motion.div
             key={activeService.title}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
-            className="relative overflow-hidden rounded-3xl border border-amber-100 bg-cream-100 shadow-warm-xl aspect-[16/10]"
+            className="hidden lg:block relative overflow-hidden rounded-3xl border border-amber-100 bg-cream-100 shadow-warm-xl aspect-[16/10]"
           >
             <img
               src={activeService.image}
@@ -139,11 +138,11 @@ export default function Services() {
                 ].join(" ")}
                 onClick={() => setActiveIndex(index)}
               >
-                <div className="flex items-center justify-between px-5 py-4">
-                  <div className="flex items-center gap-4">
+                <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 gap-3">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                     <span
                       className={[
-                        "text-sm font-semibold w-10 h-10 rounded-full flex items-center justify-center transition",
+                        "text-xs sm:text-sm font-semibold w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition flex-shrink-0",
                         isActive
                           ? "bg-amber-500 text-white shadow-warm"
                           : "bg-cream-200 text-amber-800",
@@ -152,11 +151,11 @@ export default function Services() {
                       {String(index + 1).padStart(2, "0")}
                     </span>
 
-                    <div>
-                      <p className="text-base sm:text-lg font-semibold text-stone-900">
+                    <div className="min-w-0">
+                      <p className="text-sm sm:text-lg font-semibold text-stone-900 leading-tight">
                         {service.title}
                       </p>
-                      <p className="text-sm text-stone-600">
+                      <p className="text-xs sm:text-sm text-stone-600 mt-0.5 leading-snug">
                         {service.description}
                       </p>
                     </div>
@@ -174,42 +173,45 @@ export default function Services() {
                       transition={{ duration: 0.25 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-5 pb-5">
-                        <div className="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-4 items-center rounded-2xl bg-white border border-amber-100 p-4 shadow-warm">
-                          <div className="overflow-hidden rounded-xl border border-amber-100/70 bg-cream-100 aspect-[4/3]">
-                            <img
-                              src={service.image}
-                              alt={`${service.title} example`}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-
-                          <div>
-                            <p className="text-sm font-semibold text-stone-900">
-                              Example project
-                            </p>
-                            <p className="mt-1 text-sm text-stone-600 leading-relaxed">
-                              {service.description}
-                            </p>
-
-                            <div className="mt-3 flex flex-wrap gap-2">
-                              {service.highlights.map((h) => (
-                                <span
-                                  key={h}
-                                  className="rounded-full bg-cream-100 px-3 py-1 text-xs text-amber-900 border border-amber-200/60"
-                                >
-                                  {h}
-                                </span>
-                              ))}
+                      <div className="px-4 sm:px-5 pb-4 sm:pb-5">
+                        <div className="rounded-2xl bg-white border border-amber-100 p-3 sm:p-4 shadow-warm">
+                          {/* Image - en mobile arriba (full width), en desktop al lado */}
+                          <div className="flex flex-col sm:grid sm:grid-cols-[120px_1fr] gap-3 sm:gap-4 sm:items-center">
+                            <div className="overflow-hidden rounded-xl border border-amber-100/70 bg-cream-100 aspect-[4/3] sm:aspect-[4/3]">
+                              <img
+                                src={service.image}
+                                alt={`${service.title} example`}
+                                className="w-full h-full object-cover"
+                              />
                             </div>
 
-                            <div className="mt-4">
-                              <a
-                                href="#questionnaire"
-                                className="inline-flex items-center justify-center rounded-full bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white shadow-warm hover:bg-amber-600 hover:shadow-warm-lg transition active:scale-[0.99]"
-                              >
-                                Get a Free Quote
-                              </a>
+                            <div>
+                              <p className="text-xs sm:text-sm font-semibold text-stone-900">
+                                Example project
+                              </p>
+                              <p className="mt-1 text-xs sm:text-sm text-stone-600 leading-relaxed">
+                                {service.description}
+                              </p>
+
+                              <div className="mt-2.5 sm:mt-3 flex flex-wrap gap-1.5 sm:gap-2">
+                                {service.highlights.map((h) => (
+                                  <span
+                                    key={h}
+                                    className="rounded-full bg-cream-100 px-2.5 py-1 text-[11px] sm:text-xs text-amber-900 border border-amber-200/60"
+                                  >
+                                    {h}
+                                  </span>
+                                ))}
+                              </div>
+
+                              <div className="mt-3 sm:mt-4">
+                                <a
+                                  href="#questionnaire"
+                                  className="inline-flex items-center justify-center rounded-full bg-amber-500 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white shadow-warm hover:bg-amber-600 hover:shadow-warm-lg transition active:scale-[0.99]"
+                                >
+                                  Get a Free Quote
+                                </a>
+                              </div>
                             </div>
                           </div>
                         </div>
